@@ -3,6 +3,7 @@ package com.spamdetector;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class MyReceiver extends BroadcastReceiver {
     private NotificationHelper notificationHelper;
     final int spam_threshhold = 10;
     HashMap<String, Integer> SpamWord = new HashMap<String, Integer>();
+    private Sms mSms;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -40,7 +42,19 @@ public class MyReceiver extends BroadcastReceiver {
                         msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                         msg_from = msgs[i].getOriginatingAddress();
                         msgBody += msgs[i].getMessageBody();
+                        mSms =new Sms();
+                        mSms.setAddress(msgs[i].getOriginatingAddress());
+                        mSms.setMsg(msgs[i].getMessageBody());
+                        mSms.setFolderName("1");
+                        mSms.setReadState("0");
+                        mSms.setTime(String.valueOf(msgs[i].getTimestampMillis()));
+                        mSms.setSpam(isSpam(msgBody, msg_from));
                     }
+
+                    Log.d(TAG, "onReceive: "+mSms.toString());
+                    storeToDb(context,mSms);
+
+
                     SpamWord=loadSpamWords(context);
 
                     //Check if the sms is spam or not
@@ -52,6 +66,7 @@ public class MyReceiver extends BroadcastReceiver {
                         Log.d(TAG, "onReceive: isSpam word");
                         notificationHelper.sendHighPriorityNotification(msg_from,msgBody, MainActivity.class);
                         //else store the sms in a db and not in inbox and do not notify the user
+//                        storeToDb();
                         saveSpam(msg_from, context);
                     }//end if else
                     Log.d(TAG, "onReceive: "+msg_from+" "+msgBody);
@@ -64,6 +79,22 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
     }
+
+    private void storeToDb(Context context, Sms sms) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                SmsRoomDatabase.getInstance(context.getApplicationContext())
+                        .smsDao()
+                        .insertSms(sms);
+
+                Log.d(TAG, "run: todos has been inserted...");
+            }
+        }).start();
+    }
+
     public boolean isSpam(String msg, String sender)
     {
         int weight=0;
@@ -76,6 +107,8 @@ public class MyReceiver extends BroadcastReceiver {
 //        if(!sender.matches("\\d{11}")) {
 //            return true;
 //        }
+
+
 
         //work remaining:
         //1. work on URL shortners and domains
@@ -186,5 +219,7 @@ public class MyReceiver extends BroadcastReceiver {
         System.out.println(SpamWord);
         return SpamWord;
     }
+
+
 
 }
