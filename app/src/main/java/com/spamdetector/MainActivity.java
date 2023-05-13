@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void GotoChatActivity() {
-        Intent intent = new Intent(this, ChatListActivity.class);
+        Intent intent = new Intent(this, ImgToTextActivity.class);
         startActivity(intent);
         finish();
     }
