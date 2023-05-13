@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatListActivity">
+    tools:context=".ChatListActivity"
+    android:orientation="vertical">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/Primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_smsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/row"
+            tools:listitem="@layout/item_conversation"
             app:layoutManager="LinearLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>

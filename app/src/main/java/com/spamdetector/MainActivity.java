@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (Build.VERSION.SDK_INT > 32) {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.RECEIVE_SMS},
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.RECEIVE_SMS,Manifest.permission.SEND_SMS, Manifest.permission.CALL_PHONE},
                         PERMISSION_REQUEST_CODE);
             }else {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{ Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_SMS},
+                        new String[]{ Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_SMS,Manifest.permission.SEND_SMS,Manifest.permission.CALL_PHONE},
                         PERMISSION_REQUEST_CODE);
             }
         }catch (Exception e){
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     public List<Sms> getAllSms() {
         List<Sms> lstSms = new ArrayList<Sms>();
         Sms objSms = new Sms();
-        Uri message = Uri.parse("content://sms/inbox");
+        Uri message = Uri.parse("content://sms/");
         ContentResolver cr = this.getContentResolver();
 
         Cursor c = cr.query(message, null, null, null, null);
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     // allow
 
                     loadOldMsg();

@@ -18,5 +18,7 @@ public class ViewModel extends AndroidViewModel {
 
     public LiveData<List<Sms>> getAllSms(){
         return smsRoomDatabase.smsDao().findAllSms();
+    }    public LiveData<List<Sms>> getAllSmsSpecific(String num){
+        return smsRoomDatabase.smsDao().findAllSpecific(num);
     }
 }

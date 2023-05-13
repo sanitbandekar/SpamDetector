@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,13 +19,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.spamdetector.databinding.ActivityChatListBinding;
 
 import java.util.List;
 
 
-public class ChatListActivity extends AppCompatActivity {
+public class ChatListActivity extends AppCompatActivity implements SmsListAdapter.OnItemClickInterface {
     private static final String TAG = "ChatListActivity";
 //    SimpleCursorAdapter adapter;
 //    ListView lvMsg;
@@ -32,7 +36,6 @@ public class ChatListActivity extends AppCompatActivity {
 
     SmsListAdapter adapter;
 
-    private List<Sms> smsList;
     private ViewModel viewModel;
 
 
@@ -41,6 +44,9 @@ public class ChatListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding =  ActivityChatListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
         recyclerView = binding.rvSmsList;
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
@@ -48,7 +54,7 @@ public class ChatListActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Sms> sms) {
                 Log.d(TAG, "onChanged: "+sms);
-                adapter = new SmsListAdapter(sms);
+                adapter = new SmsListAdapter(sms,ChatListActivity.this);
                 binding.rvSmsList.setAdapter(adapter);
                 binding.rvSmsList.addItemDecoration(new DividerItemDecoration(ChatListActivity.this, DividerItemDecoration.VERTICAL));
             }
@@ -113,5 +119,52 @@ public class ChatListActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         viewModel.getAllSms().removeObservers(this);
+    }
+
+    @Override
+    public void OnItemClick(Sms sms) {
+//        Toast.makeText(this,sms.getAddress(), Toast.LENGTH_SHORT).show();
+        Intent intent =new Intent(this,ChatBoxActivity.class);
+        intent.putExtra("address", sms.getAddress());
+        startActivity(intent);
+    }
+
+    @Override
+    public void longPress(Sms sms) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    //set icon
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                    //set title
+                .setTitle("Delete this conversation?")
+                    //set message
+//                .setMessage("Delete all messages?")
+                    //set positive button
+                .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SmsRoomDatabase.getInstance(ChatListActivity.this)
+                                        .smsDao()
+                                        .deleteAllSpecific(sms.getAddress());
+                            }
+                        }).start();
+                        Toast.makeText(ChatListActivity.this, sms.getAddress(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+//set negative button
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+//                        Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+
     }
 }

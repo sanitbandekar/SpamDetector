@@ -24,6 +24,9 @@ public interface SmsDao {
     @Delete
     void deleteTodo(Sms sms);
 
+    @Query("DELETE FROM sms_table WHERE address = :address")
+    void deleteAllSpecific(String address);
+
     @Update
     void updateTodo(Sms sms);
 
@@ -31,6 +34,9 @@ public interface SmsDao {
     void insertMultipleTodo(List<Sms> smsList);
 
 
-    @Query("SELECT * FROM sms_table")
+    @Query("SELECT * FROM sms_table GROUP BY address ORDER BY sms_id DESC")
     LiveData<List<Sms>> findAllSms();
+
+    @Query("SELECT * FROM sms_table WHERE address = :num ")
+    LiveData<List<Sms>> findAllSpecific(String num);
 }

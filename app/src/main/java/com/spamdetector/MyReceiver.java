@@ -45,7 +45,7 @@ public class MyReceiver extends BroadcastReceiver {
                         mSms =new Sms();
                         mSms.setAddress(msgs[i].getOriginatingAddress());
                         mSms.setMsg(msgs[i].getMessageBody());
-                        mSms.setFolderName("1");
+                        mSms.setFolderName("inbox");
                         mSms.setReadState("0");
                         mSms.setTime(String.valueOf(msgs[i].getTimestampMillis()));
                         mSms.setSpam(isSpam(msgBody, msg_from));
