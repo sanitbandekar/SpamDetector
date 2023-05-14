@@ -102,7 +102,7 @@ public class ImgToTextActivity extends AppCompatActivity {
             Bundle data = intentReceived.getExtras();
             if (data != null) {
                 if (intentReceived.getExtras().get("data") != null) {
-
+                    binding.anim.setVisibility(View.GONE);
                     Bitmap bitmap = (Bitmap) intentReceived.getExtras().get("data");
                     binding.imageView.setImageBitmap(bitmap);
                     InputImage image = InputImage.fromBitmap(bitmap, 90);
@@ -157,6 +157,7 @@ public class ImgToTextActivity extends AppCompatActivity {
                                         // ...
                                         Log.e(TAG, "onFailure: ",e );
                                         Toast.makeText(ImgToTextActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                        binding.anim.setVisibility(View.VISIBLE);
                                     }
                                 });
         // [END run_detector]
@@ -174,6 +175,7 @@ public class ImgToTextActivity extends AppCompatActivity {
                         if (dlData != null) {
                             Uri dl = dlData.getData();
                             binding.imageView.setImageURI(dl);
+                            binding.anim.setVisibility(View.GONE);
                             try {
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dl);
                                 InputImage image = InputImage.fromBitmap(bitmap, 90);

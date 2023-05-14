@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.spamdetector.databinding.ActivityChatBoxBinding;
 
 
-public class ChatBoxActivity extends AppCompatActivity {
+public class ChatBoxActivity extends AppCompatActivity implements ChatBoxAdapter.ChatBoxInterface {
     RecyclerView recyclerView;
     ViewModel viewModel;
     ChatBoxAdapter adapter;
@@ -51,7 +51,7 @@ public class ChatBoxActivity extends AppCompatActivity {
         address=  intent.getStringExtra("address");
 
         viewModel.getAllSmsSpecific(address).observe(this, sms -> {
-            adapter = new ChatBoxAdapter(sms);
+            adapter = new ChatBoxAdapter(sms,this);
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             recyclerView.setAdapter(adapter);
         });
@@ -171,46 +171,19 @@ public class ChatBoxActivity extends AppCompatActivity {
                         })
                         .show();
 
-                Toast.makeText(getApplicationContext(),"Item 1 Selected",Toast.LENGTH_LONG).show();
+
                 return true;
             case R.id.dial_number:
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+address));
                 startActivity(callIntent);
-                Toast.makeText(getApplicationContext(),"Item 2 Selected",Toast.LENGTH_LONG).show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 }
 
-    private void dialogCreate() {
-
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                //set icon
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                //set title
-                .setTitle("Delete this conversation?")
-                //set message
-//                .setMessage("Delete all messages?")
-                //set positive button
-                .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what would happen when positive button is clicked
-
-                    }
-                })
-//set negative button
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what should happen when negative button is clicked
-//                        Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
-                    }
-                })
-                .show();
-    }
 
     private void deleteSmsAll(String mAddress) {
         new Thread(new Runnable() {
@@ -226,5 +199,43 @@ public class ChatBoxActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onLongPress(Sms sms) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                //set icon
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                //set title
+                .setTitle("Delete this message?")
+                //set message
+//                .setMessage("Delete all messages?")
+                //set positive button
+                .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SmsRoomDatabase.getInstance(ChatBoxActivity.this)
+                                        .smsDao()
+                                        .deleteSms(sms);
+                            }
+                        }).start();
+                        Toast.makeText(ChatBoxActivity.this, sms.getAddress(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+//set negative button
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+//                        Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+
     }
 }

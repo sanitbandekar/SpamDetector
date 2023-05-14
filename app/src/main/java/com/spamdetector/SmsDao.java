@@ -22,7 +22,7 @@ public interface SmsDao {
     Sms findTodoById(int id);
 
     @Delete
-    void deleteTodo(Sms sms);
+    void deleteSms(Sms sms);
 
     @Query("DELETE FROM sms_table WHERE address = :address")
     void deleteAllSpecific(String address);

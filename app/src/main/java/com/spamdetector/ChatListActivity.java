@@ -1,6 +1,8 @@
 package com.spamdetector;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -46,6 +50,8 @@ public class ChatListActivity extends AppCompatActivity implements SmsListAdapte
         setContentView(binding.getRoot());
 
 
+        Toolbar toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
 
         recyclerView = binding.rvSmsList;
 
@@ -59,54 +65,23 @@ public class ChatListActivity extends AppCompatActivity implements SmsListAdapte
                 binding.rvSmsList.addItemDecoration(new DividerItemDecoration(ChatListActivity.this, DividerItemDecoration.VERTICAL));
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
-
-
-
-
-//        lvMsg = (ListView) findViewById(R.id.lvMsg);
-//        Uri inboxURI = Uri.parse("content://sms");
-//
-//// List required columns
-//        String[] reqCols = new String[]{"_id", "address", "body","date"};
-//
-//// Get Content Resolver object, which will deal with Content Provider
-//        ContentResolver cr = getContentResolver();
-//
-//// Fetch Inbox SMS Message from Built-in Content Provider
-//        Cursor c = cr.query(inboxURI, reqCols, null,null,null);
-//
-//
-//        adapter = new SimpleCursorAdapter(this, R.layout.row, c,
-//                new String[] { "address","body","date"} , new int[] {
-//                R.id.lblMsg, R.id.lblNumber,R.id.date });
-//
-//        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-//
-//            @Override
-//            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-//                if (columnIndex == 1) {
-//                    String createDate = c.getString(columnIndex);
-//                    TextView textView = (TextView) view;
-//                    textView.setText("Create date: " + createDate);
-//                    Log.d(TAG, "setViewValue: "+createDate);
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//
-//        });
-//        lvMsg.setAdapter(adapter);
-//
-//        lvMsg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                String info = ( (TextView) view.findViewById(R.id.lblNumber) ).getText().toString();
-//                Log.d(TAG, "onItemClick: "+info);
-//            }
-//        });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Log.d(TAG, "onOptionsItemSelected: "+id);
+        if (id == R.id.scan){
+            Intent intent = new Intent(this, ImgToTextActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
