@@ -24,6 +24,11 @@ import android.widget.Toast;
 
 import com.spamdetector.databinding.ActivityChatBoxBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class ChatBoxActivity extends AppCompatActivity implements ChatBoxAdapter.ChatBoxInterface {
     RecyclerView recyclerView;
@@ -101,13 +106,15 @@ public class ChatBoxActivity extends AppCompatActivity implements ChatBoxAdapter
                 Log.d(TAG, "SMS delivered intent received.");
             }
         }, new IntentFilter(DELIVERED_ACTION));
-
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm a", Locale.getDefault());
+        String currentDateAndTime = sdf.format(currentTime);
         Sms mSms =new Sms();
         mSms.setAddress(address);
         mSms.setMsg(msg);
         mSms.setFolderName("sent");
         mSms.setReadState("0");
-        mSms.setTime("");
+        mSms.setTime(currentDateAndTime);
         mSms.setSpam(false);
         new Thread(new Runnable() {
             @Override

@@ -9,7 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHolder> {
     private static final String TAG = "ChatBoxAdapter";
@@ -36,11 +40,13 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: "+viewType);
         switch (viewType){
             case ITEM_LEFT:
                 return new LeftChatViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sent_message,parent,false));
             case ITEM_RIGHT:
                 return new RightChatViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message,parent,false));
+
         }
         return null;
     }
@@ -53,14 +59,21 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
         if(holder.getItemViewType() == ITEM_LEFT){
             LeftChatViewHolder viewHolder = (LeftChatViewHolder) holder;
             viewHolder.thread_message_body_sent.setText(sms.getMsg());
+            Log.d(TAG, "onBindViewHolder: "+ sms.getTime());
+            if (!sms.getTime().isEmpty() && sms.getTime() !=null) {
+                viewHolder.thread_date_time.setText(sms.getTime());
+            }
 
-
-        }else{
+        }else if (holder.getItemViewType() == ITEM_RIGHT) {
             RightChatViewHolder viewHolder = (RightChatViewHolder) holder;
             viewHolder.thread_message_body.setText(sms.getMsg());
-      ;
+            viewHolder.thread_date_time_sent.setText(sms.getTime());
+
+            if (sms.getSpam())
+                viewHolder.spam.setVisibility(View.VISIBLE);
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -69,11 +82,12 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
 
 
     public  class LeftChatViewHolder extends ViewHolder{
-        public TextView thread_message_body_sent;
+        public TextView thread_message_body_sent, thread_date_time;
         public LeftChatViewHolder(@NonNull View itemView) {
             super(itemView);
 
             thread_message_body_sent = itemView.findViewById(R.id.thread_message_body_sent);
+            thread_date_time = itemView.findViewById(R.id.thread_date_time_sent);
             
             thread_message_body_sent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,11 +102,15 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
 
     public class RightChatViewHolder extends ViewHolder {
 
-        public TextView thread_message_body;
+        public TextView thread_message_body,spam ,thread_date_time_sent;
 
         public RightChatViewHolder(@NonNull View itemView) {
             super(itemView);
             thread_message_body = itemView.findViewById(R.id.thread_message_body);
+            thread_date_time_sent= itemView.findViewById(R.id.thread_date_time);
+
+            spam = itemView.findViewById(R.id.thread_message_spam);
+
 
 
             thread_message_body.setOnLongClickListener(new View.OnLongClickListener() {
@@ -106,6 +124,7 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
             });
         }
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

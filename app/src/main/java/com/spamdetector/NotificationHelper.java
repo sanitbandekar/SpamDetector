@@ -30,7 +30,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     private String CHANNEL_NAME = "High priority channel";
-    private String CHANNEL_ID = "com.example.notifications" + CHANNEL_NAME;
+    private String CHANNEL_ID = "com.spamdetector" + CHANNEL_NAME;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createChannels() {
@@ -54,7 +54,7 @@ public class NotificationHelper extends ContextWrapper {
 //                .setContentText(body)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText("summary").setBigContentTitle(title).bigText(body))
+                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText("Spam message found").setBigContentTitle(title).bigText(body))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();

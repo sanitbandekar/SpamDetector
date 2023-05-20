@@ -34,9 +34,11 @@ public interface SmsDao {
     void insertMultipleTodo(List<Sms> smsList);
 
 
-    @Query("SELECT * FROM sms_table GROUP BY address ORDER BY sms_id DESC")
+    @Query("SELECT * FROM sms_table where sms_id in (SELECT max(sms_id) FROM sms_table GROUP BY address ) order by sms_id desc")
     LiveData<List<Sms>> findAllSms();
 
     @Query("SELECT * FROM sms_table WHERE address = :num ")
     LiveData<List<Sms>> findAllSpecific(String num);
+    @Query("SELECT * FROM sms_table WHERE isSpam = 1 ")
+    LiveData<List<Sms>> findAllSpam();
 }

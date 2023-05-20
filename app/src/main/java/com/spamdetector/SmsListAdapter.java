@@ -49,6 +49,16 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
         return smsList.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ItemConversationBinding rowBinding;

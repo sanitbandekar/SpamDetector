@@ -33,6 +33,7 @@ import java.io.IOException;
 
 public class ImgToTextActivity extends AppCompatActivity {
     private Intent intentReceived;
+    private MyReceiver myReceiver = new MyReceiver();
     private static final String TAG = "ImgToTextActivity";
     private ActivityImgToTextBinding binding;
 
@@ -130,6 +131,12 @@ public class ImgToTextActivity extends AppCompatActivity {
                                 // [START get_text]
                                 Log.d(TAG, "onSuccess: "+visionText.getText());
                                 binding.textView.setText(visionText.getText());
+                                binding.textView.setVisibility(View.VISIBLE);
+                                binding.scanHeading.setVisibility(View.VISIBLE);
+                                    Log.d(TAG, "onSuccess: spam"+myReceiver.isSpam(visionText.getText().toLowerCase(), ""));
+                                if (myReceiver.isSpam(visionText.getText(), "")){
+                                     binding.spamIndicatorScan.setVisibility(View.VISIBLE);
+                                }
                                 for (Text.TextBlock block : visionText.getTextBlocks()) {
                                     Rect boundingBox = block.getBoundingBox();
                                     Point[] cornerPoints = block.getCornerPoints();

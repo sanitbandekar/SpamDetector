@@ -6,14 +6,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_90"
-    tools:context=".ChatBoxActivity">
+    android:background="@color/Primary"
+    tools:context=".ChatBoxActivity"
+    >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/Primary"
+        android:background="@color/light_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,74 +25,61 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_box"
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_conversation"
-
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/thread_type_message"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:stackFromEnd="true"
+        tools:listitem="@layout/item_sent_message" />
 
-    <ImageView
-        android:id="@+id/thread_add_attachment"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:alpha="0.9"
-        android:background="?selectableItemBackgroundBorderless"
-        android:contentDescription="attachment"
-        android:padding="12dp"
-        android:src="@drawable/ic_plus_vector"
-        app:layout_constraintBottom_toBottomOf="@+id/thread_type_message"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/thread_type_message" />
 
-    <EditText
-        android:id="@+id/thread_type_message"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:hint="Type a message…"
-        android:inputType="textCapSentences|textMultiLine"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/thread_select_sim_icon"
-        app:layout_constraintStart_toEndOf="@+id/thread_add_attachment" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_5sdp"
 
-    <ImageView
-        android:id="@+id/thread_select_sim_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0.9"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:paddingStart="8dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="12dp"
-        android:src="@drawable/ic_sim_vector"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/thread_type_message"
-        app:layout_constraintEnd_toStartOf="@+id/send_msg_btn"
-        app:layout_constraintTop_toTopOf="@+id/thread_type_message"
-        tools:visibility="visible" />
-    <Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/send_msg_btn"
-        android:layout_marginEnd="4dp"
-        android:alpha="0.4"
-        android:background="?selectableItemBackgroundBorderless"
-        android:clickable="false"
-        android:contentDescription="OK"
-        android:drawableTop="@drawable/ic_send_vector"
-        android:paddingVertical="4dp"
-        android:text="SMS"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/thread_type_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/thread_type_message" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+
+            android:background="@drawable/sent_msg_bg"
+            android:id="@+id/thread_type_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="@dimen/_20sdp"
+            android:layout_toStartOf="@+id/send_msg_btn"
+            android:gravity="center_vertical"
+            android:hint="Type a message…"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minHeight="48dp" />
+
+
+
+        <Button
+            android:id="@+id/send_msg_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+
+            android:alpha="0.4"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="false"
+            android:contentDescription="OK"
+            android:drawableTop="@drawable/ic_send_vector"
+            android:paddingVertical="4dp"
+            android:text="SMS"
+            android:textSize="12sp"
+            />
+
+    </RelativeLayout>
 
 
 

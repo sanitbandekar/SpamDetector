@@ -14,7 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +37,9 @@ public class MyReceiver extends BroadcastReceiver {
             Bundle bundle = intent.getExtras();
             SmsMessage[] msgs = null;
             String msg_from="";
+            Date currentTime = Calendar.getInstance().getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm a", Locale.getDefault());
+        String currentDateAndTime = sdf.format(currentTime);
             if (bundle != null){
                 try{
                     Object[] pdus = (Object[]) bundle.get("pdus");
@@ -47,7 +54,7 @@ public class MyReceiver extends BroadcastReceiver {
                         mSms.setMsg(msgs[i].getMessageBody());
                         mSms.setFolderName("inbox");
                         mSms.setReadState("0");
-                        mSms.setTime(String.valueOf(msgs[i].getTimestampMillis()));
+                        mSms.setTime(currentDateAndTime);
                         mSms.setSpam(isSpam(msgBody, msg_from));
                     }
 

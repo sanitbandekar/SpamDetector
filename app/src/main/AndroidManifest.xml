@@ -16,8 +16,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -27,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpamDetector"
         tools:targetApi="31">
+        <activity
+            android:name=".AllSpamActivity"
+            android:exported="false" />
         <activity
             android:name=".ImgToTextActivity"
             android:exported="false" />

@@ -9,20 +9,20 @@
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ImgToTextActivity">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_marginTop="@dimen/_60sdp"
-        android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginEnd="@dimen/_30sdp"
-        tools:srcCompat="@tools:sample/avatars" />
+        >
+        <ImageView
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            tools:srcCompat="@tools:sample/avatars" />
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/anim"
             android:layout_width="match_parent"
@@ -35,57 +35,90 @@
             app:lottie_loop="true"
             />
 
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/scan_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView"
+            android:layout_centerInParent="true"
+            android:text="Scanning Completed" />
 
-    <TextView
-        android:textAlignment="center"
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginEnd="@dimen/_30sdp"
+        <TextView
+android:visibility="gone"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:background="@drawable/btn_bg"
 
-         />
+            android:padding="@dimen/_10sdp"
+            android:textAlignment="center"
+            android:textSize="@dimen/_20sdp" />
+
+        <TextView
+
+            android:id="@+id/spam_indicator_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:text="SPAM!"
+            android:textColor="@color/md_red"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
-            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/button"
-                android:textSize="@dimen/_8sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_weight="1"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/btn_bg"
-                android:text="Open camera"
-                android:layout_marginEnd="@dimen/_30sdp"/>
-                <Button
-                    android:textSize="@dimen/_8sdp"
-                    android:id="@+id/storage_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="32dp"
-                    android:background="@drawable/btn_bg"
-                    android:text="Open Storage" />
+
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_30sdp"
+                        android:layout_marginBottom="32dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_bg"
+                        android:text="Open camera"
+                        android:textSize="@dimen/_8sdp" />
+
+                    <Button
+                        android:id="@+id/storage_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="32dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_bg"
+                        android:text="Open Storage"
+                        android:textSize="@dimen/_8sdp" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-
+   </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>
 </layout>

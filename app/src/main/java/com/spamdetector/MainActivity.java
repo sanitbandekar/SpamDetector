@@ -18,8 +18,11 @@ import android.view.View;
 
 import com.spamdetector.databinding.ActivityMainBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (Build.VERSION.SDK_INT > 32) {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.RECEIVE_SMS,Manifest.permission.SEND_SMS, Manifest.permission.CALL_PHONE},
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_SMS,Manifest.permission.SEND_SMS, Manifest.permission.CALL_PHONE},
                         PERMISSION_REQUEST_CODE);
             }else {
                 ActivityCompat.requestPermissions(this,
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         .smsDao()
                         .insertMultipleTodo(todoList);
                 Log.d(TAG, "inserted m....");
+                GotoChatActivity();
 
             }
         });
@@ -100,16 +104,25 @@ public class MainActivity extends AppCompatActivity {
         this.startManagingCursor(c);
         int totalSMS = c.getCount();
 
+
         if (c.moveToFirst()) {
             for (int i = 0; i < totalSMS; i++) {
-                Log.d(TAG, "getAllSms: "+c);
+
 
                 objSms = new Sms();
                 objSms.setId(c.getInt(c.getColumnIndexOrThrow("_id")));
                 objSms.setAddress(c.getString(c
                         .getColumnIndexOrThrow("address")));
                 objSms.setMsg(c.getString(c.getColumnIndexOrThrow("body")));
-                objSms.setTime(c.getString(c.getColumnIndexOrThrow("date")));
+                int indexDate = c.getColumnIndex("date");
+                long date = c.getLong(indexDate);
+
+                // convert millis value to proper format
+                Date dateVal = new Date(date);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+                String dateText = format.format(dateVal);
+                Log.d(TAG, "getAllSms: "+dateText);
+                objSms.setTime(dateText);
                 objSms.setReadState(c.getString(c.getColumnIndexOrThrow("read")));
                 objSms.setSpam(false);
                 if (c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
@@ -143,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
                     loadOldMsg();
 
-                    GotoChatActivity();
+
                 }  else {
                     //deny
                     getNotificationPermission();

@@ -6,4 +6,8 @@
         android:title="Scan"
         android:icon="@drawable/qrcode"
         app:showAsAction="always"/>
+    <item android:id="@+id/allSpamMenu"
+        android:title="All Spam Messages"
+        android:icon="@drawable/qrcode"
+       />
 </menu>

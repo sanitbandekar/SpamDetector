@@ -27,7 +27,11 @@ import android.widget.Toast;
 
 import com.spamdetector.databinding.ActivityChatListBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ChatListActivity extends AppCompatActivity implements SmsListAdapter.OnItemClickInterface {
@@ -56,6 +60,14 @@ public class ChatListActivity extends AppCompatActivity implements SmsListAdapte
         recyclerView = binding.rvSmsList;
 
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
+
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh-mm a", Locale.getDefault());
+//        String currentDateandTime = sdf.format(new Date());
+//        Log.d(TAG, "currentDateandTime: "+currentDateandTime);
+
+
+
         viewModel.getAllSms().observe(this, new Observer<List<Sms>>() {
             @Override
             public void onChanged(List<Sms> sms) {
@@ -79,6 +91,9 @@ public class ChatListActivity extends AppCompatActivity implements SmsListAdapte
         Log.d(TAG, "onOptionsItemSelected: "+id);
         if (id == R.id.scan){
             Intent intent = new Intent(this, ImgToTextActivity.class);
+            startActivity(intent);
+        }else if (id==R.id.allSpamMenu){
+            Intent intent = new Intent(this, AllSpamActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
