@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
     final int PERMISSION_REQUEST_CODE =112;
+    private MyReceiver myReceiver = new MyReceiver();
 
 
     @Override
@@ -124,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "getAllSms: "+dateText);
                 objSms.setTime(dateText);
                 objSms.setReadState(c.getString(c.getColumnIndexOrThrow("read")));
-                objSms.setSpam(false);
+                objSms.setSpam(myReceiver.isSpam(c.getString(c.getColumnIndexOrThrow("body")),c.getString(c
+                        .getColumnIndexOrThrow("address"))));
                 if (c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
                     objSms.setFolderName("inbox");
                 } else {

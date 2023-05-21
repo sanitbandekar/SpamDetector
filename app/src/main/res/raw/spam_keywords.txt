@@ -128,3 +128,13 @@ charges 3
 charged 3
 must 3
 vouchers 4
+bank 2
+temporarily 3
+locked 1
+refund 1
+Amazon 1
+refunding 1
+number 1
+Fargo 1
+prevent 1
+deletion

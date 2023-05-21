@@ -56,7 +56,7 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        return position;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

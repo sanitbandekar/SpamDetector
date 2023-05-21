@@ -17,7 +17,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="All Spam Messages"
+            app:title="Spam Messages"
             app:titleTextColor="@color/white"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title" />
 

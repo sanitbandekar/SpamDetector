@@ -57,7 +57,6 @@ public class ChatBoxActivity extends AppCompatActivity implements ChatBoxAdapter
 
         viewModel.getAllSmsSpecific(address).observe(this, sms -> {
             adapter = new ChatBoxAdapter(sms,this);
-            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             recyclerView.setAdapter(adapter);
         });
 

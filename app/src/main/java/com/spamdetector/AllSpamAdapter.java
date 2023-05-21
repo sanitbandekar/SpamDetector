@@ -34,8 +34,11 @@ public class AllSpamAdapter extends RecyclerView.Adapter<AllSpamAdapter.ViewHold
 
         holder.mBinding.allMsg.setText(sms.getMsg());
         holder.mBinding.mNumber.setText(sms.getAddress());
+//        holder.setIsRecyclable(false);
 
     }
+
+
 
     @Override
     public int getItemCount() {

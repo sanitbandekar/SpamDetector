@@ -69,10 +69,16 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ViewHold
             viewHolder.thread_message_body.setText(sms.getMsg());
             viewHolder.thread_date_time_sent.setText(sms.getTime());
 
-            if (sms.getSpam())
+            if (sms.getSpam()){
                 viewHolder.spam.setVisibility(View.VISIBLE);
+            }else {
+                viewHolder.spam.setVisibility(View.GONE);
+            }
         }
     }
+
+
+
 
 
     @Override
